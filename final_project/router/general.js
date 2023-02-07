@@ -36,11 +36,9 @@ public_users.get('/books',function (req, res) {
       resolve(res.send(JSON.stringify({books}, null, 4)));
     });
 
-    get_books.then(() => console.log("Promise for Task 10 resolved"));
-
 });
 
-public_users.get('/axios',async function (req, res) {
+public_users.get('/axiosupreme',async function (req, res) {
     try{
       const test = await axios.get("http://127.0.0.1:3000/")
       res.status(300).json({books: test.data});
@@ -92,6 +90,7 @@ public_users.get('/author/:author',function (req, res) {
 });
 
 public_users.get('/author2/:author',function (req, res) {
+  const get_books = new Promise((resolve, reject) => {
   author = req.params.author;
   keys = Object.keys(books)
   ans = {}
@@ -101,13 +100,15 @@ public_users.get('/author2/:author',function (req, res) {
     }
   });
   if(Object.keys(ans) > 0){
-    const get_books = new Promise((resolve, reject) => {
+    
       resolve(res.status(300).json({books: ans}));
-    });
-    get_books.then(() => console.log("Promise for Task 13 resolved"));
+    
+    
   }else{
     return res.status(404).json({message: "Could not find books"});
   }
+});
+get_books.then(() => console.log("Promise for Task 13 resolved"));
 });
 
 // Get all books based on title
@@ -128,6 +129,7 @@ public_users.get('/title/:title',function (req, res) {
 });
 
 public_users.get('/title2/:title',async function (req, res) {
+  const get_books = new Promise((resolve, reject) => {
   title = req.params.title;
   keys = Object.keys(books)
   ans = {}
@@ -137,14 +139,13 @@ public_users.get('/title2/:title',async function (req, res) {
     }
   });
   if(Object.keys(ans) > 0){
-    const get_books = new Promise((resolve, reject) => {
       resolve(res.status(300).json({books: ans}));
-    });
-    await get_books;
   }else{
     return res.status(400).json({message: "Could not find books"});
   }
 });
+await get_books;
+})
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
